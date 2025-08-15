@@ -23,7 +23,7 @@ class RAG():
         if retrieval_model != "nomic-ai/nomic-embed-multimodal-3b":
             raise Exception(f"RAG only works with model nomic-ai/nomic-embed-multimodal-3b")
         
-        self.qdrant_client = QdrantClient(url=qdrant_url)
+        self.qdrant_client = QdrantClient(qdrant_url)
         self.collection_name = collection_name
         self.device = device
 
