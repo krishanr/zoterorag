@@ -212,14 +212,14 @@ class RAG():
                 input_text,
                 add_special_tokens = False,
                 return_tensors = "pt",
-            ).to("cuda:3")
+            ).to("cuda")
         else:
             inputs =  self.tokenizer(
                 None,
                 input_text,
                 add_special_tokens = False,
                 return_tensors = "pt",
-            ).to("cuda:3")
+            ).to("cuda")
 
 
         #text_streamer = TextStreamer( self.tokenizer, skip_prompt = True)
