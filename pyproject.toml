@@ -27,8 +27,7 @@ dependencies = [
     "python-dotenv",
     "unsloth",
     "langchain-community",
-    "html2text",
-    "git+https://github.com/illuin-tech/colpali",
+    "html2text"
 ]
 
 [project.urls]
