@@ -12,10 +12,14 @@ from qdrant_client.models import Filter, FieldCondition, MatchValue
 import time
 from tqdm import tqdm
 import stamina
+import os
 
 from unsloth import FastVisionModel
 
 from .datamodel import Arxiv
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class RAG():
 
@@ -32,9 +36,10 @@ class RAG():
             torch_dtype=torch.bfloat16,
             device_map=self.device,  # or "mps" if on Apple Silicon
             attn_implementation="flash_attention_2" if is_flash_attn_2_available() else None,
+            token=os.getenv("HUGGINGFACE_ACCESS_TOKEN")
         ).eval()
 
-        self.colpali_processor = BiQwen2_5_Processor.from_pretrained(retrieval_model,device_map=self.device)
+        self.colpali_processor = BiQwen2_5_Processor.from_pretrained(retrieval_model,device_map=self.device,token=os.getenv("HUGGINGFACE_ACCESS_TOKEN"))
 
         self.model, self.tokenizer = None, None
 
@@ -186,7 +191,7 @@ class RAG():
             self.model, self.tokenizer = FastVisionModel.from_pretrained("unsloth/Qwen2.5-VL-7B-Instruct-bnb-4bit",
                                             device_map="cuda:3",
                                             load_in_4bit = True, # Use 4bit to reduce memory use. False for 16bit LoRA.
-                                            use_gradient_checkpointing = "unsloth")
+                                            use_gradient_checkpointing = "unsloth",token=os.getenv("HUGGINGFACE_ACCESS_TOKEN"))
             
         messages = [
         {"role": "system", "content": "You are an expert retrieval augmented generation agent, capable of creating clear answers using text and images."},
