@@ -35,7 +35,7 @@ class RAG():
             retrieval_model,
             torch_dtype=torch.bfloat16,
             device_map=self.device,  # or "mps" if on Apple Silicon
-            attn_implementation="flash_attention_2" if is_flash_attn_2_available() else None,
+            attn_implementation= None ,#"flash_attention_2" if is_flash_attn_2_available() else None,
             token=os.getenv("HUGGINGFACE_ACCESS_TOKEN")
         ).eval()
 
@@ -189,7 +189,7 @@ class RAG():
 
         if self.model is None:
             self.model, self.tokenizer = FastVisionModel.from_pretrained("unsloth/Qwen2.5-VL-7B-Instruct-bnb-4bit",
-                                            device_map="cuda:3",
+                                            device_map="cuda",
                                             load_in_4bit = True, # Use 4bit to reduce memory use. False for 16bit LoRA.
                                             use_gradient_checkpointing = "unsloth",token=os.getenv("HUGGINGFACE_ACCESS_TOKEN"))
             
