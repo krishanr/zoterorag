@@ -220,13 +220,7 @@ class RAG():
 
 
         #text_streamer = TextStreamer( self.tokenizer, skip_prompt = True)
-        response =  self.model.generate(**inputs, max_new_tokens = 512,
-                        use_cache = True, temperature = 1.5, min_p = 0.1)
-        generated_ids_trimmed = [
-            out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, response)
-        ]
-        output_text = self.tokenizer.batch_decode(
-            generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
-        )
-        
-        return output_text, text_query
+        generated_ids =  self.model.generate(**inputs, max_new_tokens = 512,
+                        use_cache = False, temperature = 1.5, min_p = 0.1)
+        generated_ids_trimmed = generated_ids[0][len(inputs.input_ids[0]):]
+        return self.processor.decode(generated_ids_trimmed, skip_special_tokens=True), text_query

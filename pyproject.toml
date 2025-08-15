@@ -28,6 +28,7 @@ dependencies = [
     "unsloth",
     "langchain-community",
     "html2text",
+    "git+https://github.com/illuin-tech/colpali",
 ]
 
 [project.urls]
