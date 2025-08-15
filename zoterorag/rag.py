@@ -14,7 +14,7 @@ import time
 from tqdm import tqdm
 import stamina
 import os
-
+from pathlib import Path
 
 from .datamodel import Arxiv
 from dotenv import load_dotenv
@@ -27,6 +27,10 @@ class RAG():
         if retrieval_model != "nomic-ai/nomic-embed-multimodal-3b":
             raise Exception(f"RAG only works with model nomic-ai/nomic-embed-multimodal-3b")
         
+
+        # Create temp_folder for downloading PDFs
+        Path("temp_folder").mkdir(exist_ok=True)
+
         self.qdrant_client = QdrantClient(qdrant_url)
         self.collection_name = collection_name
         self.device = device
@@ -35,7 +39,7 @@ class RAG():
             retrieval_model,
             torch_dtype=torch.bfloat16,
             device_map=self.device,  # or "mps" if on Apple Silicon
-            attn_implementation= None ,#"flash_attention_2" if is_flash_attn_2_available() else None,
+            attn_implementation= "flash_attention_2" if is_flash_attn_2_available() else None,
             token=os.getenv("HUGGINGFACE_ACCESS_TOKEN")
         ).eval()
 
