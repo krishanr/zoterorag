@@ -165,3 +165,6 @@ poetry.lock
 /test_images
 
 **/lancedb
+
+# Unsloth
+unsloth_compiled_cache/

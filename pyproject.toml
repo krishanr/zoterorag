@@ -1,0 +1,51 @@
+[project]
+name = "zoterorag"
+version = "0.1.0"
+description = "A project for querying zotero documents using multimodal rag."
+authors = [
+    { name = "Krishan Rajaratnam", email = "krishanr25@rag.com" },
+]
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.28.1",
+    "numpy",
+
+    "jupyter",
+    "matplotlib",
+    "pandas",
+
+    "torch",
+    "torchvision",
+    "datasets",
+    "huggingface_hub[hf_transfer]",
+    "qdrant-client",
+    "transformers>=4.45.0",
+    "stamina",
+    "rich",
+    "pyzotero",
+    "pdf2image",
+    "python-dotenv",
+    "unsloth",
+    "langchain-community",
+    "html2text",
+]
+
+[project.urls]
+Homepage = "https://github.com/krishanr/zoterorag"
+Issues = "https://github.com/krishanr/zoterorag/issues"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.pip]
+extra-index-url = [
+    "https://download.pytorch.org/whl/cu118"
+]
+
+[tool.pip.dependencies]
+# Git dependencies go here
+colpali = { git = "https://github.com/illuin-tech/colpali" }

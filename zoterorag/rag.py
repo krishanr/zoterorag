@@ -1,3 +1,4 @@
+from unsloth import FastVisionModel
 import torch
 from PIL import Image
 from transformers.utils.import_utils import is_flash_attn_2_available
@@ -14,7 +15,6 @@ from tqdm import tqdm
 import stamina
 import os
 
-from unsloth import FastVisionModel
 
 from .datamodel import Arxiv
 from dotenv import load_dotenv
@@ -143,10 +143,7 @@ class RAG():
         search_result = self.qdrant_client.query_points(
             collection_name=self.collection_name,
             query=multivector_query,
-            #query_filter=Filter(
-            #        must=[FieldCondition(key="source", match=MatchValue(value="internet archive"))]
-            #),
-            #with_payload=True,
+            with_payload=True,
             limit=top_k,
             timeout=100,
             search_params=models.SearchParams(
@@ -170,7 +167,7 @@ class RAG():
     def get_images(self, search_result):
         return [(Arxiv.get_img(result.payload.get('image_b64')),result.payload.get("title")[:30] + f"... | Page {result.payload.get('page')+1}")  for result in search_result.points if result.payload.get('image_b64')]
 
-    def generate(self,query_text, search_result, top_k_text = 2, top_k_images = 2, text_cutoff=20000):
+    def generate(self,query_text, search_result, top_k_text = 2, top_k_images = 2, text_cutoff=20000,device : str ="cuda"):
         text_query = """Here is the text query:
 
         {query}
@@ -189,7 +186,7 @@ class RAG():
 
         if self.model is None:
             self.model, self.tokenizer = FastVisionModel.from_pretrained("unsloth/Qwen2.5-VL-7B-Instruct-bnb-4bit",
-                                            device_map="cuda",
+                                            device_map=device,
                                             load_in_4bit = True, # Use 4bit to reduce memory use. False for 16bit LoRA.
                                             use_gradient_checkpointing = "unsloth",token=os.getenv("HUGGINGFACE_ACCESS_TOKEN"))
             
@@ -212,14 +209,14 @@ class RAG():
                 input_text,
                 add_special_tokens = False,
                 return_tensors = "pt",
-            ).to("cuda")
+            ).to(device)
         else:
             inputs =  self.tokenizer(
                 None,
                 input_text,
                 add_special_tokens = False,
                 return_tensors = "pt",
-            ).to("cuda")
+            ).to(device)
 
 
         #text_streamer = TextStreamer( self.tokenizer, skip_prompt = True)
