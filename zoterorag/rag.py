@@ -189,7 +189,7 @@ class RAG():
         print(f"Text query has length {len(text_query)}.")
 
         if self.model is None:
-            self.model, self.tokenizer = FastVisionModel.from_pretrained("unsloth/Qwen2.5-VL-7B-Instruct-bnb-4bit",
+            self.model, self.tokenizer = FastVisionModel.from_pretrained("unsloth/Qwen2.5-VL-3B-Instruct-bnb-4bit",
                                             device_map=device,
                                             load_in_4bit = True, # Use 4bit to reduce memory use. False for 16bit LoRA.
                                             use_gradient_checkpointing = "unsloth",token=os.getenv("HUGGINGFACE_ACCESS_TOKEN"))
