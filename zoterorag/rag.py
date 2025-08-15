@@ -3,6 +3,7 @@ import torch
 from PIL import Image
 from transformers.utils.import_utils import is_flash_attn_2_available
 from transformers import TextStreamer
+from transformers import AutoTokenizer
 
 from colpali_engine.models import BiQwen2_5, BiQwen2_5_Processor
 
@@ -189,10 +190,20 @@ class RAG():
         print(f"Text query has length {len(text_query)}.")
 
         if self.model is None:
-            self.model, self.tokenizer = FastVisionModel.from_pretrained("unsloth/Qwen2.5-VL-3B-Instruct-bnb-4bit",
+            self.model, _ = FastVisionModel.from_pretrained("unsloth/Qwen2.5-VL-3B-Instruct-bnb-4bit",
                                             device_map=device,
                                             load_in_4bit = True, # Use 4bit to reduce memory use. False for 16bit LoRA.
                                             use_gradient_checkpointing = "unsloth",token=os.getenv("HUGGINGFACE_ACCESS_TOKEN"))
+            
+            min_pixels = 256 * 28 * 28
+            max_pixels = 1280 * 28 * 28
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                "unsloth/Qwen2.5-VL-3B-Instruct-bnb-4bit",
+                trust_remote_code=True,
+                min_pixels=min_pixels, 
+                max_pixels=max_pixels,
+                token=os.getenv("HUGGINGFACE_ACCESS_TOKEN"),
+            )
             
         messages = [
         {"role": "system", "content": "You are an expert retrieval augmented generation agent, capable of creating clear answers using text and images."},
