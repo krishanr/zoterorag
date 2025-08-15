@@ -1,0 +1,29 @@
+# conda env create -f environment.yml
+name: zoterorag #Also called torch in local environment.
+channels:
+- conda-forge
+- defaults
+dependencies:
+- python=3.10
+- jupyter
+- matplotlib
+- pandas
+
+- pip:
+  - --extra-index-url https://download.pytorch.org/whl/cu118
+  - git+https://github.com/illuin-tech/colpali
+  - unsloth
+  - torch
+  - torchvision
+  - datasets
+  - huggingface_hub[hf_transfer]
+  - qdrant-client
+  - transformers>=4.45.0
+  - stamina
+  - rich
+  - pyzotero
+  - pdf2image
+  - python-dotenv
+  - unsloth
+  - langchain-community
+  - html2text
