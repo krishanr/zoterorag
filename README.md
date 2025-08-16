@@ -16,7 +16,7 @@ $ pip install git+https://github.com/illuin-tech/colpali
 
 Then follow the steps for getting a [zotero API key](https://pyzotero.readthedocs.io/en/latest/) and add it to your .env file under the variable ```ZOTERO_API_KEY```. Also add your ```HUGGINGFACE_ACCESS_TOKEN``` to your .env file.
 
-Once the installation steps are complete, the demo can be run in the notebook zotero_rag.ipynb.
+Once the installation steps are complete, the demo can be run in the notebook [zotero_rag.ipynb](https://githubtocolab.com/krishanr/zoterorag/blob/main/zotero_rag.ipynb).
 
 ## Demo
 
@@ -70,12 +70,12 @@ items = [{'version': 283,
    'dateModified': '2025-08-12T23:29:26Z'}},]
 ```
 
-The above data item is the ColPali article from arXiv. It was downloaded from zotero using pyzotero
+The above data is from the ColPali article available on arXiv. It was downloaded from zotero using pyzotero
 to demo the RAG app.
 
-Run a RAG query by changing the ```query_text``` variable
+In the following code, run a RAG query by changing the ```query_text``` variable
 and running the corresponding cell. The output will be streamed
-in real time.
+in real time by the call to ```rag.generate```.
 
 ```python
 query_text = "How does ColPali compare with BM25?"
@@ -89,7 +89,7 @@ if images:
 _, text_query = rag.generate(query_text, search_result, top_k_text=3)
 ```
 
-Below is example output to the above query. First we see 3 relevant pages that were
+The images below are examples of search results for the above query. First we see 3 relevant pages that were
 retrieved by the nomic embed multimodal retriever.
 
 ![alt text](retrieved-images.png)
