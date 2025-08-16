@@ -3,7 +3,7 @@ import torch
 from PIL import Image
 from transformers.utils.import_utils import is_flash_attn_2_available
 from transformers import TextStreamer
-from transformers import AutoTokenizer
+from transformers import AutoProcessor
 
 from colpali_engine.models import BiQwen2_5, BiQwen2_5_Processor
 
@@ -197,7 +197,7 @@ class RAG():
             
             min_pixels = 256 * 28 * 28
             max_pixels = 1280 * 28 * 28
-            self.tokenizer = AutoTokenizer.from_pretrained(
+            self.tokenizer = AutoProcessor.from_pretrained(
                 "unsloth/Qwen2.5-VL-3B-Instruct-bnb-4bit",
                 trust_remote_code=True,
                 min_pixels=min_pixels, 
@@ -236,6 +236,6 @@ class RAG():
 
         #text_streamer = TextStreamer( self.tokenizer, skip_prompt = True)
         generated_ids =  self.model.generate(**inputs, max_new_tokens = 512,
-                        use_cache = False, temperature = 1.5, min_p = 0.1)
+                        use_cache = True, temperature = 1.5, min_p = 0.1)
         generated_ids_trimmed = generated_ids[0][len(inputs.input_ids[0]):]
         return self.processor.decode(generated_ids_trimmed, skip_special_tokens=True), text_query
