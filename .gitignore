@@ -168,3 +168,6 @@ poetry.lock
 
 # Unsloth
 unsloth_compiled_cache/
+
+# Data
+temp_folder/

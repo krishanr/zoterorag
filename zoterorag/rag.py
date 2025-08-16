@@ -234,8 +234,9 @@ class RAG():
             ).to(device)
 
 
-        #text_streamer = TextStreamer( self.tokenizer, skip_prompt = True)
-        generated_ids =  self.model.generate(**inputs, max_new_tokens = 512,
+        text_streamer = TextStreamer( self.tokenizer, skip_prompt = True)
+        _ =  self.model.generate(**inputs, streamer=text_streamer, max_new_tokens = 512,
                         use_cache = True, temperature = 1.5, min_p = 0.1)
-        generated_ids_trimmed = generated_ids[0][len(inputs.input_ids[0]):]
-        return self.processor.decode(generated_ids_trimmed, skip_special_tokens=True), text_query
+        #generated_ids_trimmed = generated_ids[0][len(inputs.input_ids[0]):]
+        #return self.tokenizer.decode(generated_ids_trimmed, skip_special_tokens=True), text_query
+        return None, text_query
