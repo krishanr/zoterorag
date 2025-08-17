@@ -1,3 +1,25 @@
+## Introduction
+
+Adding web pages 🌐 and arXiv papers 📄 to **Zotero** is pretty straightforward with the Firefox or Chrome plugins. Zotero makes it easy to organize documents into collections and tag them 🗂️—but when it comes to **searching through them or answering deeper questions**, it falls short.
+
+To fix this, we can think of:
+
+* Web pages as **text documents** ✍️
+* arXiv PDFs (with equations, tables, figures, and graphs) as **image-rich documents** 📊📐
+
+This means we need a **multimodal approach**. By combining [Nomic AI’s](https://www.nomic.ai/blog/posts/nomic-embed-multimodal) text-image retrieval model with **Qwen2.5 VL**, we can build a **multimodal RAG system** 🤖 that actually understands both text *and* images.
+
+This repo walks you through building a **minimal app** that runs on **Google Colab** ⚡.
+
+---
+
+### ✨ Features
+
+1. 🧩 **Multimodal retrieval** with [Nomic Embed Multimodal 3B](https://huggingface.co/nomic-ai/nomic-embed-multimodal-3b), achieving **62.7 NDCG\@5** on Vidore-v2.
+2. 🖼️ **Vision-language reasoning** via [Qwen2.5 VL 3B (Instruct)](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct), scoring **53.1 on MMMUval**—small enough to run on Colab with **unsloth + 4-bit quantization**.
+3. ⚡ **Fast retrieval** using an in-memory **Qdrant vector DB** with binary quantization.
+4. 📝 **Smarter chunking**: Web pages are converted to markdown and split by headings, creating smaller, more meaningful chunks for retrieval.
+
 ## Installation
 
 This code has only been tested on Ubuntu/WSL. First install the following packages on linux:
