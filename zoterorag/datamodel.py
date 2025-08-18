@@ -21,7 +21,7 @@ class Document():
         self.chunk_max = chunk_max
 
     @staticmethod
-    def load(url, data, zot):
+    def load(url, data, zot=None):
 
         parsed_url = urlparse(url)
         if parsed_url.netloc == "arxiv.org":
@@ -31,8 +31,12 @@ class Document():
         elif parsed_url.netloc == "x.com":
             return X(data, zot)
         elif data['data']['itemType'] == 'attachment' and data['data']['contentType'] == 'application/pdf':
+            if not zot:
+                raise Exception("Need Zotero for PDF download.")
             return Pdf(data, zot)
         elif data['data']['itemType'] == 'book' and data['data']['links'].get("attachment") and data['data']['links'].get("attachment")['attachmentType'] == 'application/pdf':
+            if not zot:
+                raise Exception("Need Zotero for indexing PDF books.")
             return Book(data, zot)
         else:
             return Document(data, zot)
